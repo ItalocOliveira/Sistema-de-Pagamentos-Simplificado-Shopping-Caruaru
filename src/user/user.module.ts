@@ -7,6 +7,5 @@ import { AccountModule } from 'src/account/account.module';
 @Module({
   providers: [UserService],
   controllers: [UserController],
-  imports: [PrismaModule, AccountModule]
 })
 export class UserModule {}
