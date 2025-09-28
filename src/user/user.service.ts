@@ -3,11 +3,12 @@ import { SigninDto, SignupDto } from './dtos';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 import * as argon from 'argon2'
+import { AccountService } from 'src/account/account.service';
 
 @Injectable()
 export class UserService {
 
-    constructor(private prisma: PrismaService){}
+    constructor(private prisma: PrismaService, private accountService: AccountService){}
 
     async signup(dto: SignupDto){
         
@@ -21,6 +22,11 @@ export class UserService {
                     password: hash,
                 }
             });
+
+            await this.accountService.createAccount({userId: user.id});
+
+            delete user.password;
+            return user;
         }
         catch(error){
             throw error;

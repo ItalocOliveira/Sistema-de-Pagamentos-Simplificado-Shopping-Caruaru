@@ -18,6 +18,18 @@ model User {
   name String
   email String @unique
   password String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  account Account?
+}
+
+model Account {
+  id Int @id @default(autoincrement())
+  balance Float
+
+  userId Int @unique
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
