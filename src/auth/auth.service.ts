@@ -5,11 +5,12 @@ import { AccountService } from 'src/account/account.service';
 
 import * as argon from 'argon2'
 import { SigninDto } from './dtos/signin.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
 
-    constructor(private prisma: PrismaService, private accountService: AccountService){}
+    constructor(private prisma: PrismaService, private accountService: AccountService, private readonly jwtService: JwtService){}
     
         async signup(dto: SignupDto){
             
@@ -27,6 +28,7 @@ export class AuthService {
                 await this.accountService.createAccount({userId: user.id});
     
                 delete user.password;
+                console.log('Signup in: ', user.email);
                 return user;
             }
             catch(error){
@@ -53,5 +55,14 @@ export class AuthService {
             if(!passwordMatches){
                 throw new ForbiddenException('Email ou senha incorretos.');
             }
+
+            console.log('Signed in: ', user.email);
+            const payload = { username: user.email, sub: user.id};
+
+            return { accessToken: this.jwtService.sign(payload)}
+        }
+        
+        async guard(){
+
         }
 }

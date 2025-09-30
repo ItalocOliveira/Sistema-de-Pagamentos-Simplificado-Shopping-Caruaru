@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 
@@ -15,7 +15,7 @@ export class UserService {
         })
 
         if(!user){
-            throw new ForbiddenException('Acesso negado')
+            throw new NotFoundException('Acesso negado')
         }
 
         await this.prisma.user.delete({
