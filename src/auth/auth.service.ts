@@ -16,24 +16,19 @@ export class AuthService {
             
             const hash = await argon.hash(dto.password);
     
-            try{
-                const user = await this.prisma.user.create({
-                    data: {
-                        name: dto.name,
-                        email: dto.email,
-                        password: hash,
-                    }
-                });
-    
-                await this.accountService.createAccount({userId: user.id});
-    
-                delete user.password;
-                console.log('Signup in: ', user.email);
-                return user;
-            }
-            catch(error){
-                throw error;
-            }
+            const user = await this.prisma.user.create({
+                data: {
+                    name: dto.name,
+                    email: dto.email,
+                    password: hash,
+                }
+            });
+
+            await this.accountService.createAccount({userId: user.id});
+
+            delete user.password;
+            console.log('Signup in: ', user.email);
+            return user;
         }
     
         async signin(dto: SigninDto){
@@ -60,9 +55,5 @@ export class AuthService {
             const payload = { username: user.email, sub: user.id};
 
             return { accessToken: this.jwtService.sign(payload)}
-        }
-        
-        async guard(){
-
         }
 }
