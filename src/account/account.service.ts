@@ -79,7 +79,7 @@ export class AccountService {
                 throw new NotFoundException(`Conta de origem com ID ${dto.senderAccountId} não encontrada.`);
             }
             // Verificar se a o remetente tem saldo suficiente
-            if(senderAccount.balance < dto.amount){
+            if(senderAccount.balance.lessThan(dto.amount)){
                 throw new ForbiddenException('Saldo insuficiente para realizar a transferência.');
             }
 
@@ -126,4 +126,3 @@ export class AccountService {
         });
     }
 }
-
