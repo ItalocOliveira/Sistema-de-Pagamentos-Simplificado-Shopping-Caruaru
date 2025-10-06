@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AccountDto } from './dtos';
-import { transferBalanceDto } from '../transfer/dtos/transfer-balance.dto';
+import { transferBalanceDto } from '../transfer/dto/transfer-balance.dto';
 
 @Injectable()
 export class AccountService {
@@ -23,11 +23,11 @@ export class AccountService {
         return account;
     }
 
-    async getBalance(accountId: number){
+    async getBalance(authenticatedUserId: number){
 
         const account = await this.prisma.account.findUnique({
             where: {
-                id: accountId
+                userId: authenticatedUserId
             }
         });
 
@@ -36,7 +36,7 @@ export class AccountService {
         }
         
         return {
-            accountId: accountId,
+            accountId: account.id,
             balance: account.balance
         };
 

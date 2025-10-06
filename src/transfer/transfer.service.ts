@@ -1,5 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { transferBalanceDto } from 'src/transfer/dtos/transfer-balance.dto';
+import { transferBalanceDto } from 'src/transfer/dto/transfer-balance.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -82,11 +82,11 @@ export class TransferService {
         });
     }
 
-    async getHistory(accountId: number){
+    async getMyHistory(authenticatedUserId: number){
         
         const accountWithHistory = await this.prisma.account.findUnique({
             where: {
-                id: accountId
+                userId: authenticatedUserId
             },
             include: {
                 sentTransfers: true,
@@ -95,7 +95,7 @@ export class TransferService {
         })
 
         if(!accountWithHistory){
-            throw new NotFoundException(`Conta com ID ${accountId} não encontrada.`);
+            throw new NotFoundException(`Usuário com ID ${authenticatedUserId} não encontrada.`);
         }
         
         return accountWithHistory;

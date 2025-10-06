@@ -1,10 +1,10 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { SignupDto } from './dtos/signup.dto';
+import { SignupDto } from './dto/signup.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AccountService } from 'src/account/account.service';
 
 import * as argon from 'argon2'
-import { SigninDto } from './dtos/signin.dto';
+import { SigninDto } from './dto/signin.dto';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
