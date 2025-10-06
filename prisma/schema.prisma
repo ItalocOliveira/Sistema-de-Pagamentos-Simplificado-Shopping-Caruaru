@@ -45,6 +45,8 @@ model Transfer {
   senderAccountId Int
   recipientAccountId Int
 
+  createdAt DateTime @default(now())
+
   sender Account @relation("senderTransfers", fields: [senderAccountId], references: [id])
   recipient Account @relation("recipientTransfers", fields: [recipientAccountId], references: [id])
 
