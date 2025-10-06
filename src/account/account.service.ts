@@ -117,10 +117,20 @@ export class AccountService {
                 }
             });
 
-            
+            // Adicionar transação ao historico
+
+            const newTransfer = await tx.transfer.create({
+                data: {
+                    amount: dto.amount,
+                    senderAccountId: dto.senderAccountId,
+                    recipientAccountId: dto.recipientAccountId
+                }
+            })
+
             // Retornar confirmação
             return {
                 message: 'Transferência realizada com sucesso!',
+                newTransfer: newTransfer,
                 updatedSenderAccountBalance: updatedSenderAccount.balance
             }
         });

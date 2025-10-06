@@ -31,5 +31,21 @@ model Account {
 
   userId Int @unique
 
+  sentTransfers Transfer[] @relation("senderTransfers")
+  receivedTransfers Transfer[] @relation("recipientTransfers")
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Transfer {
+  id Int @id @default(autoincrement())
+
+  amount Decimal @db.Decimal(10,2)
+
+  senderAccountId Int
+  recipientAccountId Int
+
+  sender Account @relation("senderTransfers", fields: [senderAccountId], references: [id])
+  recipient Account @relation("recipientTransfers", fields: [recipientAccountId], references: [id])
+
 }
